@@ -1,1301 +1,931 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>Hadiah Bingo</title>
-<link rel="icon" type="image/png" href="https://i.ibb.co/9Hkg7j7t/image.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amplop Hadiah</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --gold1: #ffd600;
+    --gold2: #ffab00;
+    --orange1: #ff6d00;
+    --orange2: #ff3d00;
+    --cream: #fff8e1;
+    --dark: #1a0a00;
+    --dark2: #3d1a00;
+    --glow-gold: 0 0 20px #ffd600cc, 0 0 60px #ffd60077;
+    --glow-orange: 0 0 20px #ff6d00cc, 0 0 60px #ff6d0077;
+  }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a0a00 0%, #3d1500 20%, #7a2e00 45%, #d44800 70%, #ff7800 90%, #ffd600 100%);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px 20px 60px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Warm light overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,214,0,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,171,0,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,200,0.5) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 80%, rgba(255,214,0,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 35%, rgba(255,200,0,0.5) 0%, transparent 100%),
+      radial-gradient(2px 2px at 20% 90%, rgba(255,171,0,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 80% 15%, rgba(255,109,0,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 45%, rgba(255,214,0,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
     background:
-    linear-gradient(
-    rgba(2,6,23,.75),
-    rgba(15,23,42,.82)
-    ),
+      radial-gradient(ellipse at 20% 50%, rgba(255,109,0,0.20) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(255,214,0,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 90%, rgba(255,61,0,0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    url("https://i.ibb.co/wN1Xhwbx/image.png");
+  /* ============ LOGO ============ */
+  .logo-area {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
+  .logo-img {
+    width: 560px;
+    height: 560px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 16px #ffd600aa) drop-shadow(0 0 40px #ff6d0066);
+    border-radius: 20px;
+  }
 
-    min-height:100vh;
-    overflow-x:hidden;
-    color:white;
-    padding:20px;
-}
+  /* ============ TITLE ============ */
+  .title-area {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    margin-bottom: 30px;
+  }
 
-@keyframes bgMove{
-    0%{
-        background-position:0% 50%;
-    }
-    50%{
-        background-position:100% 50%;
-    }
-    100%{
-        background-position:0% 50%;
-    }
-}
+  .title-main {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(22px, 5vw, 38px);
+    font-weight: 900;
+    background: linear-gradient(90deg, #fff8e1, #ffd600, #ff6d00, #fff8e1, #ffd600);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmerText 4s linear infinite;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    filter: drop-shadow(0 2px 8px #ff6d0088);
+  }
 
-/* =========================
-   LAYOUT
-========================= */
+  @keyframes shimmerText {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
 
-.container{
-    width:100%;
-    max-width:1250px;
-    margin:auto;
+  .title-sub {
+    font-size: 14px;
+    color: rgba(255,248,225,0.65);
+    margin-top: 4px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
 
-    display:flex;
-    gap:28px;
-    justify-content:center;
-    align-items:flex-start;
-}
+  /* ============ USER ID FORM ============ */
+  .userid-section {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 28px;
+  }
 
-.left-side{
-    width:100%;
-    max-width:450px;
-}
-
-.right-side{
-    width:340px;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-}
-
-/* =========================
-   TITLE
-========================= */
-
-.title{
-    text-align:center;
-    font-size:42px;
-    font-weight:800;
-    margin-bottom:25px;
-
-    background:linear-gradient(
-    90deg,
-    #fff,
-    #facc15,
-    #fff);
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-
-    text-shadow:
-    0 0 20px rgba(255,255,255,.25),
-    0 0 40px rgba(250,204,21,.12);
-}
-
-/* =========================
-   INPUT BOX
-========================= */
-
-.code-box{
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(16px);
-
-    border-radius:26px;
-
-    padding:20px;
-
-    margin-bottom:25px;
-
+  .userid-card {
+    background: rgba(255,200,50,0.08);
+    border: 1px solid rgba(255,214,0,0.3);
+    border-radius: 20px;
+    padding: 24px 24px 20px;
+    backdrop-filter: blur(10px);
     box-shadow:
-    0 0 25px rgba(255,255,255,.04);
-}
+      0 0 0 1px rgba(255,214,0,0.15),
+      0 8px 32px rgba(255,109,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
 
-.code-box input{
-    width:100%;
-    height:60px;
+  .userid-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,214,0,0.8);
+    margin-bottom: 10px;
+  }
 
-    border:none;
-    outline:none;
+  .userid-input-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+  }
 
-    border-radius:18px;
+  /* ── MOBILE: tumpuk input di atas, tombol di bawah ── */
+  @media (max-width: 480px) {
+    .userid-input-wrap {
+      flex-direction: column;
+    }
+    .btn-confirm {
+      width: 100%;
+      padding: 13px 18px;
+    }
+  }
 
-    background:rgba(255,255,255,.06);
+  .userid-input {
+    flex: 1;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.35);
+    border: 1.5px solid rgba(255,214,0,0.4);
+    border-radius: 12px;
+    color: #fff8e1;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
 
-    border:1px solid rgba(255,255,255,.08);
+  .userid-input::placeholder { color: rgba(255,214,0,0.3); }
 
-    padding:0 18px;
+  .userid-input:focus {
+    border-color: #ffd600;
+    box-shadow: 0 0 0 3px rgba(255,214,0,0.15), 0 0 20px rgba(255,214,0,0.2);
+  }
 
-    color:white;
+  .userid-input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 
-    font-size:16px;
+  .btn-confirm {
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #ffd600, #ff6d00);
+    border: none;
+    border-radius: 12px;
+    color: #1a0a00;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(255,109,0,0.5);
+  }
 
-    transition:.3s;
-}
+  .btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,109,0,0.6);
+  }
 
-.code-box input:focus{
-    border-color:rgba(250,204,21,.5);
+  .btn-confirm:active { transform: translateY(0); }
 
+  .userid-confirmed {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(255,214,0,0.1);
+    border: 1.5px solid rgba(255,214,0,0.5);
+    border-radius: 12px;
+  }
+
+  .userid-confirmed.show { display: flex; }
+  .userid-input-wrap.hidden { display: none; }
+
+  .confirmed-icon { font-size: 20px; }
+  .confirmed-text { font-size: 13px; color: rgba(255,248,225,0.8); }
+  .confirmed-id { font-weight: 700; color: #ffd600; font-size: 15px; }
+
+  .userid-error {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #ff6d00;
+    font-weight: 600;
+    display: none;
+  }
+
+  /* ============ SUDAH DIBUKA WARNING ============ */
+  .already-used {
+    display: none;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    background: rgba(255,100,0,0.12);
+    border: 1.5px solid rgba(255,109,0,0.5);
+    border-radius: 20px;
+    padding: 28px 24px;
+    max-width: 340px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 20px;
+  }
+  .already-used.show { display: block; }
+  .already-used-icon { font-size: 48px; margin-bottom: 10px; }
+  .already-used-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    color: #ffd600;
+    margin-bottom: 8px;
+  }
+  .already-used-text { font-size: 13px; color: rgba(255,248,225,0.6); line-height: 1.6; }
+
+  /* ============ AMPLOP CONTAINER ============ */
+  .envelope-stage {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .envelope-stage.locked { pointer-events: none; opacity: 0.4; filter: grayscale(0.3); }
+
+  .envelope-wrapper {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    filter: drop-shadow(0 0 30px #ffd60088) drop-shadow(0 0 60px #ff6d0044);
+  }
+
+  .envelope-wrapper:hover { transform: scale(1.04) translateY(-4px); }
+  .envelope-wrapper:active { transform: scale(0.97); }
+
+  .envelope-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  #env-closed { opacity: 1; }
+  #env-opened { opacity: 0; transform: scale(1.1); }
+
+  .envelope-wrapper.opened #env-closed { opacity: 0; transform: scale(0.85); }
+  .envelope-wrapper.opened #env-opened { opacity: 1; transform: scale(1); }
+
+  @keyframes spinRing { to { transform: rotate(360deg); } }
+
+  /* ============ TOMBOL BUKA AMPLOP ============ */
+  .btn-open {
+    position: relative;
+    padding: 16px 44px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a0a00;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ffd600, #ff9500, #ff3d00, #ffd600);
+    background-size: 200%;
+    animation: gradientShift 3s ease infinite;
     box-shadow:
-    0 0 20px rgba(250,204,21,.15);
-}
+      0 4px 24px rgba(255,109,0,0.7),
+      0 8px 48px rgba(255,214,0,0.4),
+      0 0 0 2px rgba(255,255,255,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.35),
+      inset 0 -2px 0 rgba(0,0,0,0.15);
+    transform: translateY(0);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    z-index: 10;
+  }
 
-.code-box input::placeholder{
-    color:#94a3b8;
-}
+  .btn-open::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 48px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
 
-.code-info{
-    margin-top:12px;
-    text-align:center;
-    font-size:13px;
-    color:#cbd5e1;
-}
-
-/* =========================
-   MACHINE
-========================= */
-
-.machine-wrapper{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.machine{
-    position:relative;
-
-    width:370px;
-    height:370px;
-
-    border-radius:50%;
-
-    background:
-    radial-gradient(circle at top left,
-    rgba(255,255,255,.18),
-    transparent 35%),
-
-    rgba(255,255,255,.05);
-
-    border:10px solid rgba(255,255,255,.14);
-
-    overflow:hidden;
-
-    backdrop-filter:blur(16px);
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    animation:neonPulse 3s ease-in-out infinite;
-
+  .btn-open:hover {
+    transform: translateY(-3px);
     box-shadow:
-    inset 0 0 50px rgba(255,255,255,.08),
-    0 0 40px rgba(59,130,246,.15),
-    0 0 90px rgba(236,72,153,.08);
-}
+      0 8px 32px rgba(255,109,0,0.9),
+      0 16px 64px rgba(255,214,0,0.5),
+      0 0 80px rgba(255,61,0,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.4);
+  }
 
-/* NEON PULSE */
+  .btn-open:active { transform: translateY(1px); }
+  .btn-open:disabled { opacity: 0.4; cursor: not-allowed; transform: none; animation: none; }
 
-@keyframes neonPulse{
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
 
-    0%{
-        box-shadow:
-        inset 0 0 50px rgba(255,255,255,.08),
-        0 0 30px rgba(59,130,246,.15),
-        0 0 60px rgba(236,72,153,.08);
-    }
+  .instruction {
+    color: rgba(255,248,225,0.5);
+    font-size: 13px;
+    text-align: center;
+    margin-top: 10px;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
 
-    50%{
-        box-shadow:
-        inset 0 0 60px rgba(255,255,255,.12),
-        0 0 50px rgba(59,130,246,.35),
-        0 0 120px rgba(236,72,153,.18),
-        0 0 180px rgba(250,204,21,.08);
-    }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
+  }
 
-    100%{
-        box-shadow:
-        inset 0 0 50px rgba(255,255,255,.08),
-        0 0 30px rgba(59,130,246,.15),
-        0 0 60px rgba(236,72,153,.08);
-    }
-}
+  /* ============ CONFETTI ============ */
+  #confetti-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+  }
 
-/* SHINE EFFECT */
+  /* ============ POPUP MODAL ============ */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20,5,0,0.88);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
 
-.machine::before{
-    content:'';
+  .modal-overlay.active { display: flex; }
 
-    position:absolute;
-
-    width:180px;
-    height:600px;
-
-    background:
-    linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,.18),
-    transparent);
-
-    transform:rotate(25deg);
-
-    top:-120px;
-    left:-220px;
-
-    animation:machineShine 4s linear infinite;
-
-    z-index:15;
-}
-
-@keyframes machineShine{
-
-    100%{
-        left:520px;
-    }
-}
-
-/* GOLD RING */
-
-.gold-ring{
-    position:absolute;
-    inset:18px;
-
-    border-radius:50%;
-
-    border:3px solid rgba(250,204,21,.3);
-
-    animation:ringGlow 3s ease infinite;
-}
-
-@keyframes ringGlow{
-
-    0%{
-        box-shadow:
-        0 0 15px rgba(250,204,21,.1),
-        inset 0 0 12px rgba(250,204,21,.05);
-    }
-
-    50%{
-        box-shadow:
-        0 0 35px rgba(250,204,21,.25),
-        inset 0 0 20px rgba(250,204,21,.08);
-    }
-
-    100%{
-        box-shadow:
-        0 0 15px rgba(250,204,21,.1),
-        inset 0 0 12px rgba(250,204,21,.05);
-    }
-}
-
-/* SPINNER */
-
-.spinner{
-    position:absolute;
-    width:100%;
-    height:100%;
-
-    animation:spin 12s linear infinite;
-}
-
-@keyframes spin{
-    from{
-        transform:rotate(0deg);
-    }
-
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-/* BALL */
-
-.real-ball{
-    position:absolute;
-
-    width:58px;
-    height:58px;
-
-    border-radius:50%;
-
-    animation:ballGlow 2s ease infinite alternate;
-
+  .modal-box {
+    background: linear-gradient(145deg, #2d0e00, #5a2000, #3d1500);
+    border: 1px solid rgba(255,214,0,0.3);
+    border-radius: 28px;
+    padding: 44px 36px 36px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    position: relative;
     box-shadow:
-    inset -8px -10px 15px rgba(0,0,0,.25),
-    inset 8px 8px 12px rgba(255,255,255,.35),
-    0 8px 18px rgba(0,0,0,.3);
-}
-
-@keyframes ballGlow{
-
-    from{
-        filter:brightness(1);
-    }
-
-    to{
-        filter:
-        brightness(1.15)
-        drop-shadow(
-        0 0 10px rgba(255,255,255,.15));
-    }
-}
-
-.real-ball::before{
-    content:'';
-
-    position:absolute;
-
-    top:8px;
-    left:10px;
-
-    width:18px;
-    height:12px;
-
-    background:rgba(255,255,255,.5);
-
-    border-radius:50%;
-
-    transform:rotate(-20deg);
-}
-
-/* BALL POSITION */
-
-.ball1{
-    background:linear-gradient(145deg,#22c55e,#15803d);
-    top:245px;
-    left:60px;
-}
-
-.ball2{
-    background:linear-gradient(145deg,#ec4899,#be185d);
-    top:242px;
-    left:132px;
-}
-
-.ball3{
-    background:linear-gradient(145deg,#3b82f6,#1d4ed8);
-    top:240px;
-    left:205px;
-}
-
-.ball4{
-    background:linear-gradient(145deg,#facc15,#ca8a04);
-    top:190px;
-    left:20px;
-}
-
-.ball5{
-    background:linear-gradient(145deg,#8b5cf6,#6d28d9);
-    top:182px;
-    left:96px;
-}
-
-.ball6{
-    background:linear-gradient(145deg,#fb923c,#ea580c);
-    top:180px;
-    left:174px;
-}
-
-.ball7{
-    background:linear-gradient(145deg,#14b8a6,#0f766e);
-    top:180px;
-    left:255px;
-}
-
-.ball8{
-    background:linear-gradient(145deg,#f43f5e,#be123c);
-    top:120px;
-    left:65px;
-}
-
-.ball9{
-    background:linear-gradient(145deg,#38bdf8,#0284c7);
-    top:95px;
-    left:140px;
-}
-
-.ball10{
-    background:linear-gradient(145deg,#a3e635,#65a30d);
-    top:120px;
-    left:220px;
-}
-
-.ball11{
-    background:linear-gradient(145deg,#e879f9,#a21caf);
-    top:260px;
-    left:275px;
-}
-
-.ball12{
-    background:linear-gradient(145deg,#fde047,#ca8a04);
-    top:260px;
-    left:-5px;
-}
-
-/* ARM */
-
-.machine-arm{
-    position:absolute;
-
-    width:4px;
-    height:120px;
-
-    background:rgba(255,255,255,.55);
-
-    top:50%;
-    left:50%;
-
-    transform-origin:bottom center;
-
-    border-radius:10px;
-}
-
-.arm1{
-    transform:translate(-50%,-100%) rotate(0deg);
-}
-
-.arm2{
-    transform:translate(-50%,-100%) rotate(120deg);
-}
-
-.arm3{
-    transform:translate(-50%,-100%) rotate(240deg);
-}
-
-.center-dot{
-    position:absolute;
-
-    width:22px;
-    height:22px;
-
-    border-radius:50%;
-
-    background:#d1d5db;
-
-    top:50%;
-    left:50%;
-
-    transform:translate(-50%,-50%);
-
-    z-index:5;
-}
-
-/* GLASS */
-
-.glass{
-    position:absolute;
-    inset:0;
-
-    border-radius:50%;
-
-    background:
-    linear-gradient(
-    145deg,
-    rgba(255,255,255,.2),
-    transparent 60%);
-}
-
-/* EXIT */
-
-.exit-hole{
-    position:absolute;
-
-    bottom:-2px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    width:95px;
-    height:38px;
-
-    background:#020617;
-
-    border-radius:20px;
-
-    border:3px solid rgba(255,255,255,.08);
-
-    z-index:10;
-}
-
-/* DROP BALL */
-
-.drop-ball{
-    position:absolute;
-
-    width:66px;
-    height:66px;
-
-    border-radius:50%;
-
-    background:
-    linear-gradient(
-    145deg,
-    #ef4444,
-    #b91c1c);
-
-    left:50%;
-    transform:translateX(-50%);
-
-    bottom:190px;
-
-    opacity:0;
-
-    z-index:20;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-weight:700;
-    font-size:20px;
-
+      0 0 0 1px rgba(255,214,0,0.4),
+      0 0 60px rgba(255,109,0,0.4),
+      0 0 120px rgba(255,214,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .modal-trophy {
+    font-size: 70px;
+    display: block;
+    animation: trophyBounce 1s ease-in-out infinite alternate;
+    margin-bottom: 12px;
+  }
+
+  @keyframes trophyBounce {
+    from { transform: translateY(0) rotate(-5deg); }
+    to { transform: translateY(-12px) rotate(5deg); }
+  }
+
+  .modal-congrats {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,214,0,0.7);
+    margin-bottom: 8px;
+  }
+
+  .modal-userid-display {
+    font-size: 12px;
+    color: rgba(255,248,225,0.5);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .modal-userid-display span {
+    color: #ffd600;
+    font-weight: 700;
+  }
+
+  .modal-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(18px, 4vw, 24px);
+    font-weight: 900;
+    color: #fff8e1;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .modal-prize-label {
+    font-size: 13px;
+    color: rgba(255,248,225,0.5);
+    margin-bottom: 6px;
+  }
+
+  .modal-amount {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(32px, 8vw, 54px);
+    font-weight: 900;
+    background: linear-gradient(90deg, #ffd600, #ffab00, #ff6d00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 12px #ffd60088);
+    margin-bottom: 6px;
+  }
+
+  .modal-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,214,0,0.3), transparent);
+    margin: 24px 0;
+  }
+
+  /* ============ TOMBOL AMBIL HADIAH ============ */
+  .btn-claim {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a0a00;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(135deg, #ffd600, #ffab00, #ff6d00, #ffd600);
+    background-size: 300%;
+    animation: goldShift 2.5s ease infinite;
     box-shadow:
-    inset -8px -10px 15px rgba(0,0,0,.25),
-    inset 8px 8px 12px rgba(255,255,255,.35),
-    0 8px 18px rgba(0,0,0,.3);
-}
+      0 4px 20px rgba(255,214,0,0.6),
+      0 8px 40px rgba(255,109,0,0.35),
+      0 0 0 2px rgba(255,255,255,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.4);
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
 
-.animate-drop{
-    animation:dropBall 2.3s ease forwards;
-}
-
-@keyframes dropBall{
-
-    0%{
-        bottom:220px;
-        opacity:0;
-        transform:translateX(-50%) scale(.7);
-    }
-
-    50%{
-        opacity:1;
-    }
-
-    100%{
-        bottom:-85px;
-        opacity:1;
-    }
-}
-
-/* BUTTON */
-
-.button{
-    width:100%;
-    height:62px;
-
-    margin-top:28px;
-
-    border:none;
-
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-    90deg,
-    #22c55e,
-    #16a34a);
-
-    color:white;
-
-    font-size:19px;
-    font-weight:700;
-
-    cursor:pointer;
-
-    overflow:hidden;
-    position:relative;
-
+  .btn-claim:hover {
+    transform: translateY(-3px);
     box-shadow:
-    0 0 15px rgba(34,197,94,.25),
-    0 0 30px rgba(34,197,94,.15);
-
-    transition:.3s;
-}
-
-.button:hover{
-    transform:translateY(-2px);
-
-    box-shadow:
-    0 0 20px rgba(34,197,94,.35),
-    0 0 50px rgba(34,197,94,.25);
-}
-
-.button::before{
-    content:'';
-
-    position:absolute;
-
-    top:0;
-    left:-100%;
-
-    width:100%;
-    height:100%;
-
-    background:
-    linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,.3),
-    transparent);
-
-    animation:shine 2s infinite;
-}
-
-@keyframes shine{
-    100%{
-        left:120%;
-    }
-}
-
-/* RIGHT BOARD */
-
-.board{
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:24px;
-
-    padding:20px;
-
-    backdrop-filter:blur(16px);
-
-    box-shadow:
-    0 0 25px rgba(255,255,255,.03);
-}
-
-.board-title{
-    text-align:center;
-    color:#facc15;
-
-    font-size:20px;
-    font-weight:700;
-
-    margin-bottom:18px;
-}
-
-.winner-item{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:14px;
-
-    border-radius:16px;
-
-    background:rgba(255,255,255,.04);
-
-    margin-bottom:10px;
-}
-
-.winner-prize{
-    color:#4ade80;
-    font-weight:700;
-}
-
-/* STEPS */
-
-.step-item{
-    display:flex;
-    gap:14px;
-    align-items:center;
-
-    background:rgba(255,255,255,.04);
-
-    border-radius:16px;
-
-    padding:14px;
-
-    margin-bottom:12px;
-}
-
-.step-number{
-    min-width:34px;
-    height:34px;
-
-    border-radius:50%;
-
-    background:
-    linear-gradient(
-    145deg,
-    #facc15,
-    #ca8a04);
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    color:#111827;
-    font-weight:700;
-}
-
-.step-text{
-    font-size:14px;
-    line-height:1.5;
-    color:#e2e8f0;
-}
-
-/* POPUP */
-
-.popup-overlay{
-    position:fixed;
-    inset:0;
-
-    background:rgba(0,0,0,.7);
-
-    display:none;
-    justify-content:center;
-    align-items:center;
-
-    z-index:999;
-
-    backdrop-filter:blur(8px);
-}
-
-.popup-box{
-    width:100%;
-    max-width:360px;
-
-    background:
-    linear-gradient(
-    180deg,
-    #111827,
-    #1e293b);
-
-    border-radius:28px;
-
-    padding:30px;
-
-    text-align:center;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    box-shadow:
-    0 0 30px rgba(59,130,246,.2),
-    0 0 80px rgba(236,72,153,.15),
-    0 0 120px rgba(250,204,21,.08);
-}
-
-.popup-box h2{
-    font-size:34px;
-    margin-bottom:10px;
-    color:#4ade80;
-}
-
-.gift{
-    margin-top:10px;
-    font-size:30px;
-    font-weight:800;
-    color:#facc15;
-}
-
-.claim-btn{
-    width:100%;
-    height:55px;
-
-    margin-top:20px;
-
-    border:none;
-    border-radius:16px;
-
-    background:
-    linear-gradient(
-    90deg,
-    #facc15,
-    #eab308);
-
-    font-weight:700;
-    cursor:pointer;
-}
-
-/* LOADING */
-
-.loading-overlay{
-    position:fixed;
-
-    inset:0;
-
-    background:
-    rgba(2,6,23,.92);
-
-    backdrop-filter:blur(10px);
-
-    z-index:9999;
-
-    display:none;
-
-    justify-content:center;
-    align-items:center;
-
-    flex-direction:column;
-}
-
-.loading-spinner{
-    width:90px;
-    height:90px;
-
-    border-radius:50%;
-
-    border:6px solid
-    rgba(255,255,255,.08);
-
-    border-top:
-    6px solid #facc15;
-
-    animation:
-    spinLoader 1s linear infinite;
-
-    box-shadow:
-    0 0 30px rgba(250,204,21,.25);
-}
-
-@keyframes spinLoader{
-
-    from{
-        transform:rotate(0deg);
-    }
-
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-.loading-text{
-    margin-top:25px;
-
-    font-size:20px;
-    font-weight:700;
-
-    color:#facc15;
-
-    letter-spacing:1px;
-
-    animation:pulseText 1.2s ease infinite;
-}
-
-@keyframes pulseText{
-
-    0%{
-        opacity:.5;
-    }
-
-    50%{
-        opacity:1;
-    }
-
-    100%{
-        opacity:.5;
-    }
-}
-
-/* FOOTER */
-
-.footer{
-    margin-top:20px;
-    text-align:center;
-    font-size:13px;
-    color:#94a3b8;
-}
-
-/* MOBILE */
-
-@media(max-width:950px){
-
-    .container{
-        flex-direction:column;
-        align-items:center;
-    }
-
-    .right-side{
-        width:100%;
-        max-width:450px;
-    }
-
-    .machine{
-        width:320px;
-        height:320px;
-    }
-
-    .title{
-        font-size:34px;
-    }
-
-    .real-ball{
-        width:50px;
-        height:50px;
-    }
-}
-
+      0 8px 28px rgba(255,214,0,0.8),
+      0 16px 60px rgba(255,109,0,0.45),
+      0 0 80px rgba(255,214,0,0.3);
+  }
+
+  .btn-claim:active { transform: translateY(1px); }
+
+  @keyframes goldShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .modal-box::before, .modal-box::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .modal-box::before {
+    top: -20px; left: -20px;
+    background: radial-gradient(circle, rgba(255,214,0,0.4), transparent 70%);
+  }
+  .modal-box::after {
+    bottom: -20px; right: -20px;
+    background: radial-gradient(circle, rgba(255,109,0,0.4), transparent 70%);
+  }
+
+  /* ============ FLOATING PARTICLES ============ */
+  .particle {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatUp linear infinite;
+    z-index: 1;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(100vh) rotate(0deg); opacity: 0.6; }
+    to { transform: translateY(-20px) rotate(720deg); opacity: 0; }
+  }
+
+  /* ============ DEVTOOLS WARNING OVERLAY ============ */
+  #devtools-warning {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #1a0a00;
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 40px;
+  }
+  #devtools-warning.show { display: flex; }
+  #devtools-warning .icon { font-size: 72px; }
+  #devtools-warning h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #ffd600;
+    font-size: 20px;
+  }
+  #devtools-warning p { color: rgba(255,248,225,0.6); font-size: 14px; line-height: 1.6; }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<canvas id="confetti-canvas"></canvas>
 
-<div class="left-side">
-
-<div class="title">
-✨ HADIAH BINGO ✨
+<!-- DevTools Warning Overlay -->
+<div id="devtools-warning">
+  <div class="icon">🚫</div>
+  <h2>AKSES DITOLAK</h2>
+  <p>Developer tools tidak diizinkan.<br>Silakan tutup dan muat ulang halaman.</p>
 </div>
 
-<div class="code-box">
-
-<input type="text"
-id="accessCode"
-placeholder="Masukkan kode bingo...">
-
-<div class="code-info">
-Masukkan kode untuk memutar mesin hadiah
+<!-- ============ LOGO ============ -->
+<div class="logo-area">
+  <img class="logo-img" src="logo.png" alt="Logo">
 </div>
 
+<!-- ============ TITLE ============ -->
+<div class="title-area">
+  <div class="title-main">Amplop Berhadiah</div>
+  <div class="title-sub">Pilih & Buka Amplop Keberuntunganmu!</div>
 </div>
 
-<div class="machine-wrapper">
+<!-- ============ USER ID SECTION ============ -->
+<div class="userid-section">
+  <div class="userid-card">
+    <label class="userid-label">🔑 &nbsp; Masukkan User ID Kamu</label>
 
-<div class="machine">
+    <!-- Input form (sebelum konfirmasi) -->
+    <div class="userid-input-wrap" id="inputWrap">
+      <input
+        type="text"
+        class="userid-input"
+        id="userIdInput"
+        placeholder="Contoh: user123"
+        maxlength="30"
+        autocomplete="off"
+      >
+      <button class="btn-confirm" onclick="konfirmasiUserId()">MASUK</button>
+    </div>
 
-<div class="gold-ring"></div>
+    <!-- Status setelah konfirmasi -->
+    <div class="userid-confirmed" id="confirmedDisplay">
+      <span class="confirmed-icon">✅</span>
+      <div>
+        <div class="confirmed-text">User ID Terdaftar</div>
+        <div class="confirmed-id" id="confirmedIdText"></div>
+      </div>
+    </div>
 
-<div class="spinner">
-
-<div class="real-ball ball1"></div>
-<div class="real-ball ball2"></div>
-<div class="real-ball ball3"></div>
-<div class="real-ball ball4"></div>
-<div class="real-ball ball5"></div>
-<div class="real-ball ball6"></div>
-<div class="real-ball ball7"></div>
-<div class="real-ball ball8"></div>
-<div class="real-ball ball9"></div>
-<div class="real-ball ball10"></div>
-<div class="real-ball ball11"></div>
-<div class="real-ball ball12"></div>
-
-<div class="machine-arm arm1"></div>
-<div class="machine-arm arm2"></div>
-<div class="machine-arm arm3"></div>
-
+    <div class="userid-error" id="useridError"></div>
+  </div>
 </div>
 
-<div class="center-dot"></div>
-
-<div class="glass"></div>
-
-<div class="drop-ball"
-id="dropBall">
-?
+<!-- ============ SUDAH DIBUKA ============ -->
+<div class="already-used" id="alreadyUsed">
+  <div class="already-used-icon">📦</div>
+  <div class="already-used-title">Amplop Sudah Dibuka!</div>
+  <div class="already-used-text">
+    Perangkat ini sudah pernah membuka amplop.<br>
+    Setiap perangkat hanya bisa membuka amplop <strong>1 kali</strong>.
+  </div>
 </div>
 
-<div class="exit-hole"></div>
+<!-- ============ AMPLOP STAGE ============ -->
+<div class="envelope-stage" id="envelopeStage">
+  <div class="envelope-wrapper" id="envelopeWrapper" onclick="bukaAmplop()">
+    <div class="envelope-ring"></div>
+    <img class="envelope-img" id="env-closed" src="tutup.png" alt="Amplop Tertutup">
+    <img class="envelope-img" id="env-opened" src="buka.png" alt="Amplop Terbuka">
+  </div>
 
+  <button class="btn-open" id="btnOpen" onclick="bukaAmplop()">
+    ✨ &nbsp; BUKA AMPLOP &nbsp; ✨
+  </button>
+
+  <div class="instruction" id="instruction">Masukkan User ID dulu untuk membuka amplop!</div>
 </div>
 
-</div>
-
-<button class="button"
-onclick="playGame()">
-PUTAR BINGO
-</button>
-
-<div class="footer">
-Event terbatas • Ambil Hadiah hari ini
-</div>
-
-</div>
-
-<div class="right-side">
-
-<div class="board">
-
-<div class="board-title">
-🏆 Pemenang Terbaru
-</div>
-
-<div id="winnerList">
-
-<div class="winner-item">
-<span>R***Y</span>
-<span class="winner-prize">
-Rp 100.000
-</span>
-</div>
-
-<div class="winner-item">
-<span>A***A</span>
-<span class="winner-prize">
-Rp 500,000
-</span>
-</div>
-
-<div class="winner-item">
-<span>D***Z</span>
-<span class="winner-prize">
-Rp 2,000,000
-</span>
-</div>
-
-</div>
-
-</div>
-
-<div class="board">
-
-<div class="board-title">
-🎯 Cara Bermain
-</div>
-
-<div class="step-item">
-<div class="step-number">1</div>
-
-<div class="step-text">
-Masukkan kode bingo
-</div>
-</div>
-
-<div class="step-item">
-<div class="step-number">2</div>
-
-<div class="step-text">
-Tekan tombol PUTAR BINGO
-</div>
-</div>
-
-<div class="step-item">
-<div class="step-number">3</div>
-
-<div class="step-text">
-Tunggu bola keluar dari mesin
-</div>
-</div>
-
-<div class="step-item">
-<div class="step-number">4</div>
-
-<div class="step-text">
-Screenshot dan Claim hadiah spesial kamu
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- POPUP -->
-
-<div class="popup-overlay"
-id="popupOverlay">
-
-<div class="popup-box">
-
-<h2>🎉 SELAMAT</h2>
-
-<p>Kamu mendapatkan hadiah:</p>
-
-<div class="gift"
-id="giftText">
-Rp 100.000
-</div>
-
-<button class="claim-btn"
-onclick="window.location.href='http://wadahwow.com/'">
-CLAIM HADIAH
-</button>
-
-</div>
-
-</div>
-
-<!-- LOADING -->
-
-<div class="loading-overlay"
-id="loadingOverlay">
-
-<div class="loading-spinner"></div>
-
-<div class="loading-text">
-MENGACAK HADIAH...
-</div>
-
+<!-- ============ MODAL POPUP ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <span class="modal-trophy">🏆</span>
+    <div class="modal-congrats">🎉 Selamat! 🎉</div>
+    <div class="modal-userid-display">User ID: <span id="modalUserId"></span></div>
+    <div class="modal-title">Anda Mendapatkan<br>Hadiah Sebesar</div>
+    <div class="modal-prize-label">Total Hadiah</div>
+    <div class="modal-amount" id="prizeAmount">Rp 0</div>
+    <div class="modal-divider"></div>
+    <a href="#" class="btn-claim" id="claimBtn" target="_blank">
+      💰 &nbsp; AMBIL SEKARANG!! &nbsp; 💰
+    </a>
+  </div>
 </div>
 
 <script>
+  // ══════════════════════════════════════════════
+  // KONFIGURASI HADIAH
+  const hadiah = [
+    { label: "Rp 500.000", value: 500000 },
+    { label: "Rp 1.000.000", value: 1000000 },
+    { label: "Rp 1.500.000", value: 1500000 },
+    { label: "Rp 2.000.000", value: 2000000 },
+  ];
 
-const hadiah = [
-'Rp 20,000',
-'Rp 250,000',
-'Rp 50.,000',
-'Rp 100,000',
-'Rp 500,000',
-'Rp 2,000,000',
-'Rp 1,000,000'
-];
+  // KONFIGURASI LINK TOMBOL AMBIL HADIAH
+  const claimLink = "https://medaliapk.com/"; // ← GANTI INI
 
-function playGame(){
+  // ══════════════════════════════════════════════
+  // STATE
+  let sudahBuka = false;
+  let userIdTerkonfirmasi = null;
+  const STORAGE_KEY = 'amplop_sudah_dibuka';
+  const USERID_KEY  = 'amplop_user_id';
 
-    const code =
-    document.getElementById(
-    'accessCode'
-    ).value.trim();
+  // ══════════════════════════════════════════════
+  // INIT: cek apakah device sudah pernah buka
+  window.addEventListener('DOMContentLoaded', () => {
+    const pernahBuka = localStorage.getItem(STORAGE_KEY);
+    const savedId    = localStorage.getItem(USERID_KEY);
 
-    const validCodes = [
-    'super88',
-    'winner88',
-    'wadahku',
-    'hadiah88',
-    'jackpot88',
-    'pastiwin123'
-    ];
+    if (pernahBuka === '1') {
+      // Sembunyikan amplop, tampilkan pesan sudah dibuka
+      document.getElementById('envelopeStage').style.display = 'none';
+      document.getElementById('alreadyUsed').classList.add('show');
 
-    if(code === ''){
-        alert('Masukkan kode bingo');
-        return;
+      // Tampilkan user ID yang tersimpan jika ada
+      if (savedId) {
+        document.getElementById('inputWrap').classList.add('hidden');
+        document.getElementById('confirmedDisplay').classList.add('show');
+        document.getElementById('confirmedIdText').textContent = savedId;
+      }
+
+      // Disable input
+      document.getElementById('userIdInput').disabled = true;
+    } else {
+      // Kunci amplop sampai user ID diisi
+      document.getElementById('envelopeStage').classList.add('locked');
+      document.getElementById('btnOpen').disabled = true;
+    }
+  });
+
+  // ══════════════════════════════════════════════
+  // KONFIRMASI USER ID
+  function konfirmasiUserId() {
+    const input = document.getElementById('userIdInput');
+    const errorEl = document.getElementById('useridError');
+    const val = input.value.trim();
+
+    errorEl.style.display = 'none';
+
+    if (!val) {
+      errorEl.textContent = '⚠️ User ID tidak boleh kosong!';
+      errorEl.style.display = 'block';
+      input.focus();
+      return;
     }
 
-    if(!validCodes.includes(code)){
-        alert('Kode tidak valid');
-        return;
+    if (val.length < 3) {
+      errorEl.textContent = '⚠️ User ID minimal 3 karakter!';
+      errorEl.style.display = 'block';
+      input.focus();
+      return;
     }
 
-    alert('Kode valid!');
+    // Konfirmasi berhasil
+    userIdTerkonfirmasi = val;
+    localStorage.setItem(USERID_KEY, val);
 
-    const loading =
-    document.getElementById(
-    'loadingOverlay'
-    );
+    // Update UI
+    document.getElementById('inputWrap').classList.add('hidden');
+    document.getElementById('confirmedDisplay').classList.add('show');
+    document.getElementById('confirmedIdText').textContent = val;
 
-    const ball =
-    document.getElementById(
-    'dropBall'
-    );
+    // Buka kunci amplop
+    document.getElementById('envelopeStage').classList.remove('locked');
+    document.getElementById('btnOpen').disabled = false;
+    document.getElementById('instruction').textContent = 'Tekan tombol untuk membuka amplop keberuntunganmu!';
+  }
 
-    const popup =
-    document.getElementById(
-    'popupOverlay'
-    );
+  // Tekan Enter juga bisa konfirmasi
+  document.getElementById('userIdInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') konfirmasiUserId();
+  });
 
-    const giftText =
-    document.getElementById(
-    'giftText'
-    );
+  // ══════════════════════════════════════════════
+  // BUKA AMPLOP
+  function bukaAmplop() {
+    if (sudahBuka) return;
+    if (!userIdTerkonfirmasi) return;
 
-    const randomNumber =
-    Math.floor(Math.random()*99)+1;
+    sudahBuka = true;
 
-    const randomGift =
-    hadiah[
-    Math.floor(
-    Math.random()*hadiah.length
-    )];
+    // Simpan ke localStorage — device sudah buka
+    localStorage.setItem(STORAGE_KEY, '1');
 
-    loading.style.display='flex';
+    const wrapper = document.getElementById('envelopeWrapper');
+    const btnOpen = document.getElementById('btnOpen');
+    const instruction = document.getElementById('instruction');
 
-    setTimeout(()=>{
+    wrapper.classList.add('opened');
+    btnOpen.disabled = true;
+    instruction.textContent = '✨ Sedang membuka...';
 
-        loading.style.display='none';
+    const terpilih = hadiah[Math.floor(Math.random() * hadiah.length)];
 
-        ball.innerText =
-        randomNumber;
+    setTimeout(launchConfetti, 400);
+    setTimeout(() => tampilkanModal(terpilih.label), 1200);
+  }
 
-        ball.classList.remove(
-        'animate-drop'
-        );
+  function tampilkanModal(labelHadiah) {
+    document.getElementById('prizeAmount').textContent = labelHadiah;
+    document.getElementById('claimBtn').href = claimLink;
+    document.getElementById('modalUserId').textContent = userIdTerkonfirmasi;
+    document.getElementById('modalOverlay').classList.add('active');
+  }
 
-        void ball.offsetWidth;
+  // ══════════════════════════════════════════════
+  // CONFETTI ENGINE
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
 
-        ball.classList.add(
-        'animate-drop'
-        );
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
 
-        setTimeout(()=>{
+  let confettiPieces = [];
+  let animating = false;
 
-            giftText.innerText =
-            randomGift;
+  const colors = [
+    '#ffd600','#ffab00','#ff6d00','#ff3d00','#fff8e1',
+    '#ffcc02','#ff9500','#ffe066','#ff7043','#ffd180'
+  ];
 
-            popup.style.display =
-            'flex';
+  function createPiece() {
+    return {
+      x: Math.random() * canvas.width,
+      y: canvas.height + 10,
+      vx: (Math.random() - 0.5) * 6,
+      vy: -(Math.random() * 18 + 14),
+      gravity: 0.35,
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 12,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      size: Math.random() * 10 + 6,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle',
+      alpha: 1,
+    };
+  }
 
-        },2200);
+  function launchConfetti() {
+    for (let i = 0; i < 180; i++) {
+      setTimeout(() => confettiPieces.push(createPiece()), i * 12);
+    }
+    if (!animating) animateConfetti();
+  }
 
-    },2500);
-}
+  function animateConfetti() {
+    animating = true;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confettiPieces = confettiPieces.filter(p => p.alpha > 0.01);
 
-function closePopup(){
+    confettiPieces.forEach(p => {
+      p.vy += p.gravity;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.rotationSpeed;
+      if (p.y > canvas.height * 0.7) p.alpha -= 0.012;
 
-    document.getElementById(
-    'popupOverlay'
-    ).style.display='none';
-}
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillStyle = p.color;
 
-/* AUTO WINNER */
+      if (p.shape === 'rect') {
+        ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      } else {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
 
-setInterval(()=>{
+    if (confettiPieces.length > 0) {
+      requestAnimationFrame(animateConfetti);
+    } else {
+      animating = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
 
-    const names = [
-    'R***Y',
-    'A***A',
-    'D***Z',
-    'F***N',
-    'K***L',
-    'M***X'
-    ];
-
-    const prizes = [
-    'Rp 10.000',
-    'Rp 25.000',
-    'Rp 500,000',
-    'Rp 2,000,000',
-    'Rp 1,000,000'
-    ];
-
-    const list =
-    document.getElementById(
-    'winnerList'
-    );
-
-    const item =
-    document.createElement(
-    'div'
-    );
-
-    item.className =
-    'winner-item';
-
-    item.innerHTML = `
-    <span>
-    ${names[Math.floor(
-    Math.random()*names.length)]}
-    </span>
-
-    <span class="winner-prize">
-    ${prizes[Math.floor(
-    Math.random()*prizes.length)]}
-    </span>
+  // ══════════════════════════════════════════════
+  // FLOATING PARTICLES (dekorasi background)
+  function spawnParticle() {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    const size = Math.random() * 4 + 1;
+    const hue = Math.random() > 0.5 ? '#ffd600' : '#ff6d00';
+    el.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}vw;
+      bottom: -10px;
+      background: ${hue};
+      opacity: ${Math.random() * 0.5 + 0.1};
+      animation-duration: ${Math.random() * 8 + 6}s;
+      animation-delay: ${Math.random() * 5}s;
+      box-shadow: 0 0 ${size * 3}px ${hue};
     `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 14000);
+  }
+  setInterval(spawnParticle, 600);
 
-    list.prepend(item);
+  // ══════════════════════════════════════════════
+  // DEVTOOLS DETERRENT
+  // Disable klik kanan
+  document.addEventListener('contextmenu', e => e.preventDefault());
 
-    if(list.children.length > 5){
-        list.removeChild(
-        list.lastChild
-        );
+  // Disable shortcut keyboard devtools
+  document.addEventListener('keydown', e => {
+    if (
+      e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && ['I','J','C','U'].includes(e.key.toUpperCase())) ||
+      (e.ctrlKey && e.key === 'U')
+    ) {
+      e.preventDefault();
+      return false;
     }
+  });
 
-},4000);
-
+  // Deteksi devtools terbuka via ukuran window
+  (function detectDevTools() {
+    const threshold = 160;
+    function check() {
+      const widthDiff  = window.outerWidth  - window.innerWidth;
+      const heightDiff = window.outerHeight - window.innerHeight;
+      if (widthDiff > threshold || heightDiff > threshold) {
+        document.getElementById('devtools-warning').classList.add('show');
+      } else {
+        document.getElementById('devtools-warning').classList.remove('show');
+      }
+    }
+    setInterval(check, 1000);
+  })();
 </script>
-
 </body>
 </html>
